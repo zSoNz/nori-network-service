@@ -145,11 +145,26 @@ infix operator <=: DefaultPrecedence // GET
 func <= <DataType, ModelType>(data: NetworkOperationComposingResult<DataType, ModelType.Type>, modelHandler: @escaping ModelHandler<ModelType>)
     where ModelType: NetworkProcessable, ModelType.DataType == DataType
 {
-    print("test")
     data.0.handler = { result in
         modelHandler(ModelType.initialize(with: result))
     }
     data.0.task?.resume()
+}
+
+@discardableResult
+func * <Session, Model, DataType> (session: Session.Type, request: Request<Model>) -> NetworkOperationComposingResult<DataType, Model.Type>
+    where Session: SessionService, Session.DataType == DataType,
+    Model: NetworkProcessable, Model.DataType == DataType
+{
+    let handlerContainer = TaskExecutableDataHandler<DataType>(handler: nil, task: nil)
+    
+    let task = session.dataTask(url: request.url) {
+        handlerContainer.handler?($0)
+    }
+    
+    handlerContainer.task = task
+    
+    return (handlerContainer, Model.self)
 }
 
 struct Error: NetworkProcessable, Codable {
@@ -169,8 +184,13 @@ extension NetworkProcessable where Self: Codable {
     }
 }
 
-(UrlSessionService.self * Error.self) <= { result in
+let params = RequestParametrsQuery(params: [
+    "id" : "1",
+    "type" : "hour"
+])
+
+(UrlSessionService.self * (Error.self + params)) <= { result in
     print(result.cod)
-    print(result.message)
 }
+//let test1 = (UrlSessionService.self * (Error.self + params))
 
