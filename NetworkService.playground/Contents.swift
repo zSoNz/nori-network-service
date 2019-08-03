@@ -96,6 +96,18 @@ func * <Session, Model, DataType> (session: Session.Type, model: Model.Type) -> 
     return (handlerContainer, model)
 }
 
+struct RequestParametrs {
+    
+    let params: [String : String]?
+}
+
+infix operator +
+func + <ModelType, DataType>(model: ModelType, params: RequestParametrs)
+    where ModelType: NetworkProcessable, ModelType.DataType == DataType
+{
+    
+}
+
 
 func => <DataType, ModelType>(data: NetworkOperationComposingResult<DataType, ModelType.Type>, modelHandler: @escaping ModelHandler<ModelType>)
     where ModelType: NetworkProcessable, ModelType.DataType == DataType
