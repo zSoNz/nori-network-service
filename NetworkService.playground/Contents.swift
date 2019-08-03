@@ -1,7 +1,5 @@
 import UIKit
 
-infix operator =>: DefaultPrecedence // GET
-
 protocol URLContainable {
     
     static var url: URL { get }
@@ -96,20 +94,20 @@ func * <Session, Model, DataType> (session: Session.Type, model: Model.Type) -> 
     return (handlerContainer, model)
 }
 
-struct RequestParametrs {
+struct RequestParametrsQuery {
     
     let params: [String : String]?
 }
 
 infix operator +
-func + <ModelType, DataType>(model: ModelType, params: RequestParametrs)
+func + <ModelType, DataType>(model: ModelType, params: RequestParametrsQuery)
     where ModelType: NetworkProcessable, ModelType.DataType == DataType
 {
     
 }
 
-
-func => <DataType, ModelType>(data: NetworkOperationComposingResult<DataType, ModelType.Type>, modelHandler: @escaping ModelHandler<ModelType>)
+infix operator <=: DefaultPrecedence // GET
+func <= <DataType, ModelType>(data: NetworkOperationComposingResult<DataType, ModelType.Type>, modelHandler: @escaping ModelHandler<ModelType>)
     where ModelType: NetworkProcessable, ModelType.DataType == DataType
 {
     print("test")
@@ -136,7 +134,7 @@ extension NetworkProcessable where Self: Codable {
     }
 }
 
-(UrlSessionService.self * Error.self) => { result in
+(UrlSessionService.self * Error.self) <= { result in
     print(result.cod)
     print(result.message)
 }
