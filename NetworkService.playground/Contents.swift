@@ -1,4 +1,29 @@
-import UIKit
+import Foundation
+
+infix operator +?: AdditionPrecedence
+
+extension URL {
+    
+    static func + (left: URL, right: String) -> URL {
+        return left.appendingPathComponent(right)
+    }
+    
+    static func +? (left: URL, right: [String: Any]) -> URL {
+        guard var urlComponents = URLComponents(string: left.absoluteString) else {
+            return left.absoluteURL
+        }
+        
+        urlComponents.queryItems = right.map {
+            URLQueryItem(name: $0.key, value: "\($0.value)")
+        }
+        
+        guard let resultURL = urlComponents.url else {
+            return left.absoluteURL
+        }
+        
+        return resultURL
+    }
+}
 
 protocol URLContainable {
     
@@ -99,11 +124,21 @@ struct RequestParametrsQuery {
     let params: [String : String]?
 }
 
-infix operator +
-func + <ModelType, DataType>(model: ModelType, params: RequestParametrsQuery)
-    where ModelType: NetworkProcessable, ModelType.DataType == DataType
+struct Request<ModelType>
+    where ModelType: NetworkProcessable
 {
     
+    let modelType: ModelType.Type
+    let url: URL
+}
+
+infix operator +
+func + <ModelType, DataType>(model: ModelType.Type, params: RequestParametrsQuery) -> Request<ModelType>
+    where ModelType: NetworkProcessable, ModelType.DataType == DataType
+{
+    let url = model.url +? (params.params ?? [:])
+    
+    return Request(modelType: model, url: url)
 }
 
 infix operator <=: DefaultPrecedence // GET
