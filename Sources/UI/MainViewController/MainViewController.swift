@@ -73,7 +73,7 @@ class MainViewController: UIViewController {
     private func prepareData() {
         let params = EmptyParams()
         
-        (UrlSessionService.self ** (Cats.self ++ params)) <== { result in
+        (UrlSessionService.self *| (Cats.self +| params)) <=| { result in
             _ = result.map { cats in
                 DispatchQueue.main.async {
                     self.facts = cats

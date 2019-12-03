@@ -8,8 +8,8 @@
 
 import Foundation
 
-infix operator <==: DefaultPrecedence // GET
-public func <== <DataType, ModelType>(
+infix operator <=|: DefaultPrecedence // GET
+public func <=| <DataType, ModelType>(
     data: NetworkOperationComposingResult<DataType, ModelType.Type>,
     modelHandler: @escaping ModelHandler<Result<ModelType, Error>>
 )
@@ -22,8 +22,8 @@ public func <== <DataType, ModelType>(
     data.0.task?.resume()
 }
 
-infix operator ** // Combine model/request with service
-public func ** <Session, Model, DataType> (session: Session.Type, model: Model.Type) -> NetworkOperationComposingResult<DataType, Model.Type>
+infix operator *| // Combine model/request with service
+public func *| <Session, Model, DataType> (session: Session.Type, model: Model.Type) -> NetworkOperationComposingResult<DataType, Model.Type>
     where Session: SessionService, Session.DataType == DataType,
           Model: NetworkProcessable, Model.DataType == DataType
 {
@@ -39,7 +39,7 @@ public func ** <Session, Model, DataType> (session: Session.Type, model: Model.T
 }
 
 @discardableResult
-public func ** <Session, Model, DataType> (
+public func *| <Session, Model, DataType> (
     session: Session.Type,
     request: Request<Model>
 ) -> NetworkOperationComposingResult<DataType, Model.Type>
@@ -57,8 +57,8 @@ public func ** <Session, Model, DataType> (
     return (handlerContainer, Model.self)
 }
 
-infix operator ++ // Combine request with params
-public func ++ <ModelType, DataType, Params: Encodable>(model: ModelType.Type, params: Params) -> Request<ModelType>
+infix operator +| // Combine request with params
+public func +| <ModelType, DataType, Params: Encodable>(model: ModelType.Type, params: Params) -> Request<ModelType>
     where ModelType: NetworkProcessable, ModelType.DataType == DataType
 {
     let encoder = JSONEncoder()
