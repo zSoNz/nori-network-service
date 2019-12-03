@@ -10,11 +10,17 @@ import UIKit
 
 import NetworkService
 
+struct ErrorParams: Encodable {
+    
+    let id = 0
+    let type = "hour"
+}
+
 struct Error: NetworkProcessable, Codable {
     
     typealias DataType = Data
     
-    static var url = URL(string: "https://history.openwe235athermap.org/data/2.5/history/city?id=1&type=hour")!
+    static var url = URL(string: "https://history.openweathermap.org/data/2.5/history/city")!
     
     let cod: Int
     let message: String
@@ -35,10 +41,7 @@ class MainViewController: UIViewController {
     //MARK: Private
     
     private func prepareData() {
-        let params = RequestParametrsQuery(params: [
-            "id" : "1",
-            "type" : "hour"
-        ])
+        let params = ErrorParams()
         
         (UrlSessionService.self ** (Error.self ++ params)) <== { result in
             print(result)

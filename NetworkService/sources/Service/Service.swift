@@ -65,17 +65,6 @@ public class TaskExecutableDataHandler<ModelType> {
     }
 }
 
-public struct RequestParametrsQuery {
-    
-    public typealias Params = [String : String]
-    
-    public let params: Params?
-    
-    public init(params: Params?) {
-        self.params = params
-    }
-}
-
 public struct Request<ModelType>
     where ModelType: NetworkProcessable
 {

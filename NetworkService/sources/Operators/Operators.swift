@@ -58,10 +58,13 @@ public func ** <Session, Model, DataType> (
 }
 
 infix operator ++ // Combine request with params
-public func ++ <ModelType, DataType>(model: ModelType.Type, params: RequestParametrsQuery) -> Request<ModelType>
+public func ++ <ModelType, DataType, Params: Encodable>(model: ModelType.Type, params: Params) -> Request<ModelType>
     where ModelType: NetworkProcessable, ModelType.DataType == DataType
 {
-    let url = model.url +? (params.params ?? [:])
+    let encoder = JSONEncoder()
+    let data = (try? encoder.encode(params)) ?? Data()
+    
+    let url = model.url + (String(data: data, encoding: .utf8) ?? "")
     
     return Request(modelType: model, url: url)
 }
