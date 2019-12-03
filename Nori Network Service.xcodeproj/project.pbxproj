@@ -20,6 +20,7 @@
 		96B712DB22F83A2C00A39197 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B712D922F83A2C00A39197 /* MainViewController.swift */; };
 		96B712DC22F83A2C00A39197 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96B712DA22F83A2C00A39197 /* MainViewController.xib */; };
 		96E7493823967A1D003F1260 /* ErrorDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E7493723967A1D003F1260 /* ErrorDecode.swift */; };
+		96E7493A2396975F003F1260 /* Headers+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E749392396975F003F1260 /* Headers+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		96B712D922F83A2C00A39197 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		96B712DA22F83A2C00A39197 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		96E7493723967A1D003F1260 /* ErrorDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDecode.swift; sourceTree = "<group>"; };
+		96E749392396975F003F1260 /* Headers+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Headers+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 			children = (
 				96AA0404239649DD0053E45C /* URL+Extensions.swift */,
 				96AA040A23964AD40053E45C /* NetworkProcessable+Extensions.swift */,
+				96E749392396975F003F1260 /* Headers+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 			files = (
 				96E7493823967A1D003F1260 /* ErrorDecode.swift in Sources */,
 				96AA042323964EED0053E45C /* Service.swift in Sources */,
+				96E7493A2396975F003F1260 /* Headers+Extensions.swift in Sources */,
 				96AA042723964EED0053E45C /* URL+Extensions.swift in Sources */,
 				96AA042423964EED0053E45C /* Operators.swift in Sources */,
 				96AA042823964EED0053E45C /* NetworkProcessable+Extensions.swift in Sources */,

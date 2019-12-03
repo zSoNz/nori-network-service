@@ -8,12 +8,21 @@
 
 import UIKit
 
+import NetworkService
+
+class NoriHeader: Headers {
+    
+    var authorization = "Bearer r13rrqewfq344qf4q34f"
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        UrlSessionService.headers = NoriHeader()
         
         let controller = MainViewController()
         

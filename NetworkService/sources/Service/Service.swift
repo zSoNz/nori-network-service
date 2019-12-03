@@ -32,14 +32,18 @@ public enum UrlSessionServiceError: Error {
 
 private let erorrsStatusCodes = (400...599)
 
+public struct EmptyHeaders: Headers { }
+
 public class UrlSessionService: SessionService {
     
     public typealias DataType = Data
     
+    public static var headers: Headers = EmptyHeaders()
+    
     private static let session = URLSession.shared
     
     public static func dataTask(url: URL, completion: @escaping DataTypeHandler) -> Task {
-        let dataTask = self.session.dataTask(with: url) { data, response, error in
+        let dataTask = self.session.dataTask(with: self.request(url: url)) { data, response, error in
             if let statusCode = (response as? HTTPURLResponse)?.statusCode, let result = data {
                 if erorrsStatusCodes.contains(statusCode) {
                     completion(.failure(decodeResponseError(statusCode: statusCode, data: result)))
@@ -58,6 +62,16 @@ public class UrlSessionService: SessionService {
         let task = UrlSessionTask(task: dataTask)
         
         return task
+    }
+    
+    private static func request(url: URL) -> URLRequest {
+        var request = URLRequest(url: url)
+               
+        headers.dictionary.forEach {
+            request.setValue($0.value, forHTTPHeaderField: $0.key)
+        }
+        
+        return request
     }
 }
 

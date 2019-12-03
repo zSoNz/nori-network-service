@@ -41,3 +41,8 @@ public protocol SessionService {
     
     static func dataTask(url: URL, completion: @escaping DataTypeHandler) -> Task
 }
+
+public protocol Headers: Encodable {
+    
+    var dictionary: [String : String] { get }
+}
