@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		539AA642EBC2A0806863E566 /* Pods_NetworkService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D053177B136AE9AA1C25A836 /* Pods_NetworkService.framework */; };
 		96AA041E23964EC30053E45C /* NetworkService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96AA041723964EC30053E45C /* NetworkService.framework */; };
 		96AA041F23964EC30053E45C /* NetworkService.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 96AA041723964EC30053E45C /* NetworkService.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		96AA042323964EED0053E45C /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AA041023964E500053E45C /* Service.swift */; };
@@ -20,7 +19,6 @@
 		96B712CE22F8227800A39197 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96B712CC22F8227800A39197 /* LaunchScreen.storyboard */; };
 		96B712DB22F83A2C00A39197 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B712D922F83A2C00A39197 /* MainViewController.swift */; };
 		96B712DC22F83A2C00A39197 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96B712DA22F83A2C00A39197 /* MainViewController.xib */; };
-		ADED7CD482053BF6BA7DD4EB /* Pods_Nori_Network_Service.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60CB58286BD6D7CC91ECAB3B /* Pods_Nori_Network_Service.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,9 +46,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1274DE3BB9F4F972A11CFD65 /* Pods-Nori Network Service.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nori Network Service.debug.xcconfig"; path = "Target Support Files/Pods-Nori Network Service/Pods-Nori Network Service.debug.xcconfig"; sourceTree = "<group>"; };
-		56AF918DDED84DF1B61DF06D /* Pods-NetworkService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NetworkService.release.xcconfig"; path = "Target Support Files/Pods-NetworkService/Pods-NetworkService.release.xcconfig"; sourceTree = "<group>"; };
-		60CB58286BD6D7CC91ECAB3B /* Pods_Nori_Network_Service.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Nori_Network_Service.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96AA03F42396492C0053E45C /* Network_Service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Network_Service.h; sourceTree = "<group>"; };
 		96AA03F52396492C0053E45C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96AA04002396497D0053E45C /* Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
@@ -66,9 +61,6 @@
 		96B712CF22F8227800A39197 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96B712D922F83A2C00A39197 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		96B712DA22F83A2C00A39197 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
-		A5D0E5FCB415AADAAC8B5D6D /* Pods-Nori Network Service.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Nori Network Service.release.xcconfig"; path = "Target Support Files/Pods-Nori Network Service/Pods-Nori Network Service.release.xcconfig"; sourceTree = "<group>"; };
-		D053177B136AE9AA1C25A836 /* Pods_NetworkService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NetworkService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5F20E0FF87AFBEFC30C5B26 /* Pods-NetworkService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NetworkService.debug.xcconfig"; path = "Target Support Files/Pods-NetworkService/Pods-NetworkService.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +68,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				539AA642EBC2A0806863E566 /* Pods_NetworkService.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,25 +76,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				96AA041E23964EC30053E45C /* NetworkService.framework in Frameworks */,
-				ADED7CD482053BF6BA7DD4EB /* Pods_Nori_Network_Service.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		783C252225FC8611224059ED /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				D5F20E0FF87AFBEFC30C5B26 /* Pods-NetworkService.debug.xcconfig */,
-				56AF918DDED84DF1B61DF06D /* Pods-NetworkService.release.xcconfig */,
-				1274DE3BB9F4F972A11CFD65 /* Pods-Nori Network Service.debug.xcconfig */,
-				A5D0E5FCB415AADAAC8B5D6D /* Pods-Nori Network Service.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		96AA03F32396492C0053E45C /* NetworkService */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,8 +144,6 @@
 				96B712C222F8227700A39197 /* Nori Network Service */,
 				96AA03F32396492C0053E45C /* NetworkService */,
 				96B712C122F8227700A39197 /* Products */,
-				783C252225FC8611224059ED /* Pods */,
-				9A6636D3B705F7296864E4B5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -223,15 +199,6 @@
 			path = MainViewController;
 			sourceTree = "<group>";
 		};
-		9A6636D3B705F7296864E4B5 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D053177B136AE9AA1C25A836 /* Pods_NetworkService.framework */,
-				60CB58286BD6D7CC91ECAB3B /* Pods_Nori_Network_Service.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -249,7 +216,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 96AA042023964EC30053E45C /* Build configuration list for PBXNativeTarget "NetworkService" */;
 			buildPhases = (
-				F1A2CFE23280ECA48A7704C4 /* [CP] Check Pods Manifest.lock */,
 				96AA041223964EC30053E45C /* Headers */,
 				96AA041323964EC30053E45C /* Sources */,
 				96AA041423964EC30053E45C /* Frameworks */,
@@ -268,12 +234,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 96B712D222F8227800A39197 /* Build configuration list for PBXNativeTarget "Nori Network Service" */;
 			buildPhases = (
-				6373DFAACB131FDB4EF3F74D /* [CP] Check Pods Manifest.lock */,
 				96B712BC22F8227700A39197 /* Sources */,
 				96B712BD22F8227700A39197 /* Frameworks */,
 				96B712BE22F8227700A39197 /* Resources */,
 				96AA03FE2396492C0053E45C /* Embed Frameworks */,
-				CC044BC320429E55DE1CF497 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -342,70 +306,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		6373DFAACB131FDB4EF3F74D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Nori Network Service-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CC044BC320429E55DE1CF497 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Nori Network Service/Pods-Nori Network Service-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Nori Network Service/Pods-Nori Network Service-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Nori Network Service/Pods-Nori Network Service-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F1A2CFE23280ECA48A7704C4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-NetworkService-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		96AA041323964EC30053E45C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -452,7 +352,6 @@
 /* Begin XCBuildConfiguration section */
 		96AA042123964EC30053E45C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D5F20E0FF87AFBEFC30C5B26 /* Pods-NetworkService.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -480,7 +379,6 @@
 		};
 		96AA042223964EC30053E45C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 56AF918DDED84DF1B61DF06D /* Pods-NetworkService.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -624,7 +522,6 @@
 		};
 		96B712D322F8227800A39197 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1274DE3BB9F4F972A11CFD65 /* Pods-Nori Network Service.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -644,7 +541,6 @@
 		};
 		96B712D422F8227800A39197 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A5D0E5FCB415AADAAC8B5D6D /* Pods-Nori Network Service.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
