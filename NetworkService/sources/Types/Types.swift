@@ -24,7 +24,10 @@ public protocol DataInitiable {
     static func initialize(with data: Result<DataType, Error>) -> Result<Self, Error>
 }
 
-public protocol NetworkProcessable: URLContainable, DataInitiable { }
+public protocol NetworkProcessable: URLContainable, DataInitiable, Codable where DataType == Data {
+    
+    associatedtype Service: SessionService
+}
 
 public protocol Task {
    

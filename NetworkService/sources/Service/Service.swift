@@ -34,6 +34,28 @@ private let erorrsStatusCodes = (400...599)
 
 public struct EmptyHeaders: Headers { }
 
+public class EmptyTask: Task {
+    
+    public func resume() {
+        
+    }
+    
+    public func cancel() {
+        
+    }
+}
+
+public class LocalSessionService: SessionService {
+    
+    public typealias DataType = Data
+    
+    public static func dataTask(url: URL, completion: @escaping (Result<Data, Error>) -> ()) -> Task {
+        completion(.success(Data()))
+        
+        return EmptyTask()
+    }
+}
+
 public class UrlSessionService: SessionService {
     
     public typealias DataType = Data

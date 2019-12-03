@@ -9,12 +9,14 @@
 import Foundation
 
 infix operator <=|: DefaultPrecedence // GET
-public func <=| <DataType, ModelType>(
-    data: NetworkOperationComposingResult<DataType, ModelType.Type>,
+public func <=| <ModelType: NetworkProcessable, ServiceType>(
+    request: Request<ModelType>,
     modelHandler: @escaping ModelHandler<Result<ModelType, Error>>
 )
-    where ModelType: NetworkProcessable, ModelType.DataType == DataType
+    where ServiceType.DataType == ModelType.DataType, ModelType.Service == ServiceType
 {
+    let data = (ServiceType.self *| ModelType.self)
+    
     data.0.handler = { result in
         modelHandler(ModelType.initialize(with: result))
     }
@@ -22,12 +24,23 @@ public func <=| <DataType, ModelType>(
     data.0.task?.resume()
 }
 
-infix operator *| // Combine model/request with service
-public func *| <Session, Model, DataType> (session: Session.Type, model: Model.Type) -> NetworkOperationComposingResult<DataType, Model.Type>
-    where Session: SessionService, Session.DataType == DataType,
-          Model: NetworkProcessable, Model.DataType == DataType
+public func <=| <ModelType: NetworkProcessable, ServiceType>(
+    model: ModelType.Type,
+    modelHandler: @escaping ModelHandler<Result<ModelType, Error>>
+)
+    where ServiceType == ModelType.Service, ServiceType.DataType == ModelType.DataType
 {
-    let handlerContainer = TaskExecutableDataHandler<DataType>(handler: nil, task: nil)
+    Request<ModelType>(modelType: model, url: model.url) <=| modelHandler
+}
+
+infix operator *| // Combine model/request with service
+public func *| <Session: SessionService, Model: NetworkProcessable> (
+    session: Session.Type,
+    model: Model.Type
+)
+    -> NetworkOperationComposingResult<Model.DataType, Model.Type> where Session.DataType == Model.DataType
+{
+    let handlerContainer = TaskExecutableDataHandler<Model.DataType>(handler: nil, task: nil)
     
     let task = session.dataTask(url: model.url) {
         handlerContainer.handler?($0)
@@ -39,14 +52,13 @@ public func *| <Session, Model, DataType> (session: Session.Type, model: Model.T
 }
 
 @discardableResult
-public func *| <Session, Model, DataType> (
+public func *| <Session: SessionService, Model: NetworkProcessable> (
     session: Session.Type,
     request: Request<Model>
-) -> NetworkOperationComposingResult<DataType, Model.Type>
-    where Session: SessionService, Session.DataType == DataType,
-    Model: NetworkProcessable, Model.DataType == DataType
+)
+    -> NetworkOperationComposingResult<Model.DataType, Model.Type> where Session.DataType == Model.DataType
 {
-    let handlerContainer = TaskExecutableDataHandler<DataType>(handler: nil, task: nil)
+    let handlerContainer = TaskExecutableDataHandler<Model.DataType>(handler: nil, task: nil)
     
     let task = session.dataTask(url: request.url) {
         handlerContainer.handler?($0)
@@ -58,8 +70,8 @@ public func *| <Session, Model, DataType> (
 }
 
 infix operator +| // Combine request with params
-public func +| <ModelType, DataType, Params: Encodable>(model: ModelType.Type, params: Params) -> Request<ModelType>
-    where ModelType: NetworkProcessable, ModelType.DataType == DataType
+public func +| <ModelType, Params: Encodable>(model: ModelType.Type, params: Params) -> Request<ModelType>
+    where ModelType: NetworkProcessable
 {
     let encoder = JSONEncoder()
     let data = (try? encoder.encode(params)) ?? Data()

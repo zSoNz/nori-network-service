@@ -24,14 +24,33 @@ struct Cat: Codable {
     let type: String
 }
 
-struct Cats: NetworkProcessable, Codable {
+protocol CatsType {
     
+    var all: [Cat] { get }
+}
+
+struct Cats: NetworkProcessable, CatsType {
+    
+    typealias Service = UrlSessionService
     typealias DataType = Data
     
     static var url = URL(string: "https://cat-fact.herokuapp.com/facts")!
     
     let all: [Cat]
     
+}
+
+struct MockableCats: NetworkProcessable, Codable, CatsType {
+    
+    typealias Service = LocalSessionService
+    
+    static var url = URL(string: "https://cat-fact.herokuapp.com/facts")!
+    
+    static func initialize(with data: Result<Data, Error>) -> Result<MockableCats, Error> {
+        return .success(MockableCats(all: []))
+    }
+    
+    let all: [Cat]
 }
 
 class MainViewController: UIViewController {
@@ -48,7 +67,7 @@ class MainViewController: UIViewController {
     //MARK: -
     //MARK: Variables
     
-    private var facts: Cats? {
+    private var facts: CatsType? {
         didSet {
             self.fill()
         }
@@ -73,7 +92,8 @@ class MainViewController: UIViewController {
     private func prepareData() {
         let params = EmptyParams()
         
-        (UrlSessionService.self *| (Cats.self +| params)) <=| { result in
+        Cats.self <=| { result in
+            
             _ = result.map { cats in
                 DispatchQueue.main.async {
                     self.facts = cats
