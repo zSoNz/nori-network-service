@@ -25,15 +25,25 @@ public class UrlSessionTask: Task {
     }
 }
 
+public enum UrlSessionServiceError: Error {
+    
+    case unknown
+}
+
 public class UrlSessionService: SessionService {
     
-    public typealias DataType = Data?
+    public typealias DataType = Data
     
     private static let session = URLSession.shared
     
-    public static func dataTask(url: URL, completion: @escaping (DataType) -> ()) -> Task {
-        let dataTask = self.session.dataTask(with: url) { data, _, _ in
-            completion(data!)
+    public static func dataTask(url: URL, completion: @escaping DataTypeHandler) -> Task {
+        let dataTask = self.session.dataTask(with: url) { data, _, error in
+            
+            let result: ResultedDataType = data.map { .success($0) }
+                ?? error.map { .failure($0) }
+                ?? .failure(UrlSessionServiceError.unknown)
+            
+            completion(result)
         }
         
         let task = UrlSessionTask(task: dataTask)
@@ -44,10 +54,12 @@ public class UrlSessionService: SessionService {
 
 public class TaskExecutableDataHandler<ModelType> {
     
-    public var handler: ModelHandler<ModelType>?
+    public typealias ModelTypeHandler = ModelHandler<Result<ModelType, Error>>
+    
+    public var handler: ModelTypeHandler?
     public var task: Task?
     
-    public init(handler: ModelHandler<ModelType>?, task: Task?) {
+    public init(handler: ModelTypeHandler?, task: Task?) {
         self.handler = handler
         self.task = task
     }

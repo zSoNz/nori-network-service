@@ -12,9 +12,9 @@ import NetworkService
 
 struct Error: NetworkProcessable, Codable {
     
-    typealias DataType = Data?
+    typealias DataType = Data
     
-    static var url = URL(string: "http://history.openweathermap.org/data/2.5/history/city?id=1&type=hour")!
+    static var url = URL(string: "https://history.openwe235athermap.org/data/2.5/history/city?id=1&type=hour")!
     
     let cod: Int
     let message: String
@@ -41,7 +41,7 @@ class MainViewController: UIViewController {
         ])
         
         (UrlSessionService.self ** (Error.self ++ params)) <== { result in
-            print(result.cod)
+            print(result)
         }
     }
 }

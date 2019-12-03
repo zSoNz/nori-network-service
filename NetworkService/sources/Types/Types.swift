@@ -21,7 +21,7 @@ public protocol DataInitiable {
     
     associatedtype DataType
     
-    static func initialize(with data: DataType) -> Self
+    static func initialize(with data: Result<DataType, Error>) -> Result<Self, Error>
 }
 
 public protocol NetworkProcessable: URLContainable, DataInitiable { }
@@ -36,5 +36,8 @@ public protocol SessionService {
     
     associatedtype DataType
     
-    static func dataTask(url: URL, completion: @escaping (DataType) -> ()) -> Task
+    typealias ResultedDataType = Result<DataType, Error>
+    typealias DataTypeHandler = (ResultedDataType) -> ()
+    
+    static func dataTask(url: URL, completion: @escaping DataTypeHandler) -> Task
 }

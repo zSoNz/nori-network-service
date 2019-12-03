@@ -11,7 +11,7 @@ import Foundation
 infix operator <==: DefaultPrecedence // GET
 public func <== <DataType, ModelType>(
     data: NetworkOperationComposingResult<DataType, ModelType.Type>,
-    modelHandler: @escaping ModelHandler<ModelType>
+    modelHandler: @escaping ModelHandler<Result<ModelType, Error>>
 )
     where ModelType: NetworkProcessable, ModelType.DataType == DataType
 {
