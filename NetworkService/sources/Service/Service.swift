@@ -30,6 +30,8 @@ public enum UrlSessionServiceError: Error {
     case unknown
 }
 
+private let erorrsStatusCodes = (400...599)
+
 public class UrlSessionService: SessionService {
     
     public typealias DataType = Data
@@ -37,7 +39,14 @@ public class UrlSessionService: SessionService {
     private static let session = URLSession.shared
     
     public static func dataTask(url: URL, completion: @escaping DataTypeHandler) -> Task {
-        let dataTask = self.session.dataTask(with: url) { data, _, error in
+        let dataTask = self.session.dataTask(with: url) { data, response, error in
+            if let statusCode = (response as? HTTPURLResponse)?.statusCode, let result = data {
+                if erorrsStatusCodes.contains(statusCode) {
+                    completion(.failure(decodeResponseError(statusCode: statusCode, data: result)))
+                    
+                    return
+                }
+            }
             
             let result: ResultedDataType = data.map { .success($0) }
                 ?? error.map { .failure($0) }

@@ -64,7 +64,9 @@ public func ++ <ModelType, DataType, Params: Encodable>(model: ModelType.Type, p
     let encoder = JSONEncoder()
     let data = (try? encoder.encode(params)) ?? Data()
     
-    let url = model.url + (String(data: data, encoding: .utf8) ?? "")
+    let dictionary = (try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)) as? [String : Any]
+    
+    let url = model.url +? (dictionary ?? [:])
     
     return Request(modelType: model, url: url)
 }
