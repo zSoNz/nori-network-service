@@ -11,14 +11,14 @@ import Foundation
 infix operator <=|: DefaultPrecedence // GET
 public func <=| <ModelType: NetworkProcessable, ServiceType>(
     request: Request<ModelType>,
-    modelHandler: @escaping ModelHandler<Result<ModelType, Error>>
+    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
 )
-    where ServiceType.DataType == ModelType.DataType, ModelType.Service == ServiceType
+    where ModelType.Service == ServiceType
 {
     let data = (ServiceType.self *| ModelType.self)
     
     data.0.handler = { result in
-        modelHandler(ModelType.initialize(with: result))
+        modelHandler(ModelType.ReturnedType.self.initialize(with: result))
     }
     
     data.0.task?.resume()
@@ -26,9 +26,9 @@ public func <=| <ModelType: NetworkProcessable, ServiceType>(
 
 public func <=| <ModelType: NetworkProcessable, ServiceType>(
     model: ModelType.Type,
-    modelHandler: @escaping ModelHandler<Result<ModelType, Error>>
+    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
 )
-    where ServiceType == ModelType.Service, ServiceType.DataType == ModelType.DataType
+    where ServiceType == ModelType.Service
 {
     Request<ModelType>(modelType: model, url: model.url) <=| modelHandler
 }

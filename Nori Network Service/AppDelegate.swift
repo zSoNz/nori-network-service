@@ -24,11 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UrlSessionService.headers = NoriHeader()
         
-        let controller = MainViewController()
+        let controller = MainViewController<Cats>()
+//        let controller = MainViewController<MockableCats>()
+        let navigation = UINavigationController(rootViewController: controller)
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
-        window.rootViewController = controller
+        window.rootViewController = navigation
         window.makeKeyAndVisible()
         
         return true

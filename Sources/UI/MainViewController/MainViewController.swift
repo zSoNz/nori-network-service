@@ -24,24 +24,23 @@ struct Cat: Codable {
     let type: String
 }
 
-protocol CatsType {
+struct CatsModel: NetworkModel {
     
-    var all: [Cat] { get }
+    var all: [Cat]
 }
 
-struct Cats: NetworkProcessable, CatsType {
+struct Cats: NetworkProcessable {
     
+    typealias ReturnedType = CatsModel
     typealias Service = UrlSessionService
-    typealias DataType = Data
     
     static var url = URL(string: "https://cat-fact.herokuapp.com/facts")!
     
-    let all: [Cat]
-    
 }
 
-struct MockableCats: NetworkProcessable, Codable, CatsType {
+struct MockableCats: NetworkProcessable {
     
+    typealias ReturnedType = CatsModel
     typealias Service = LocalSessionService
     
     static var url = URL(string: "https://cat-fact.herokuapp.com/facts")!
@@ -53,7 +52,9 @@ struct MockableCats: NetworkProcessable, Codable, CatsType {
     let all: [Cat]
 }
 
-class MainViewController: UIViewController {
+class MainViewController<CatsProvider: NetworkProcessable>: UIViewController
+    where CatsProvider.ReturnedType == CatsModel
+{
 
     @IBOutlet var text: UILabel?
     
@@ -67,10 +68,21 @@ class MainViewController: UIViewController {
     //MARK: -
     //MARK: Variables
     
-    private var facts: CatsType? {
+    private var facts: CatsModel? {
         didSet {
             self.fill()
         }
+    }
+    
+    //MARK: -
+    //MARK: Initialization
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: "MainViewController", bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     //MARK: -
@@ -91,9 +103,10 @@ class MainViewController: UIViewController {
     
     private func prepareData() {
         let params = EmptyParams()
+        let type = CatsProvider.self
+        let q = (type +| params)
         
-        Cats.self <=| { result in
-            
+        q <=| { result in
             _ = result.map { cats in
                 DispatchQueue.main.async {
                     self.facts = cats

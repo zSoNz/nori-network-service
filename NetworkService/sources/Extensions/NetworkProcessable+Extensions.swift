@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension NetworkProcessable where Self: Codable {
+public extension NetworkModel where Self: Codable {
     
     static func initialize(with data: Result<Data, Error>) -> Result<Self, Error> {
         do {
@@ -19,9 +19,5 @@ public extension NetworkProcessable where Self: Codable {
         } catch {
             return .failure(error)
         }
-    }
-    
-    static func initialize(with data: Data?) -> Self {
-        return try! JSONDecoder().decode(Self.self, from: data!)
     }
 }
