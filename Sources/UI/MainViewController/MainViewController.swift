@@ -102,11 +102,7 @@ class MainViewController<CatsProvider: NetworkProcessable>: UIViewController
     }
     
     private func prepareData() {
-        let params = EmptyParams()
-        let type = CatsProvider.self
-        let q = (type +| params)
-        
-        q <=| { result in
+        CatsProvider.self <=| { result in
             _ = result.map { cats in
                 DispatchQueue.main.async {
                     self.facts = cats
