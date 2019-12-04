@@ -116,4 +116,9 @@ public struct Request<ModelType>
     
     public let modelType: ModelType.Type
     public let url: URL
+    
+    public init(modelType: ModelType.Type, url: URL) {
+        self.modelType = modelType
+        self.url = url
+    }
 }
