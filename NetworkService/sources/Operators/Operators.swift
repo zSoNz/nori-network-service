@@ -9,10 +9,12 @@
 import Foundation
 
 infix operator <=|: DefaultPrecedence // GET
+
+@discardableResult
 public func <=| <ModelType: NetworkProcessable, ServiceType>(
     request: Request<ModelType>,
     modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
-)
+) -> Task?
     where ModelType.Service == ServiceType
 {
     let data = (ServiceType.self *| ModelType.self)
@@ -22,15 +24,18 @@ public func <=| <ModelType: NetworkProcessable, ServiceType>(
     }
     
     data.0.task?.resume()
+    
+    return data.0.task
 }
 
+@discardableResult
 public func <=| <ModelType: NetworkProcessable, ServiceType>(
     model: ModelType.Type,
     modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
-)
+) -> Task?
     where ServiceType == ModelType.Service
 {
-    Request<ModelType>(modelType: model, url: model.url) <=| modelHandler
+    return Request<ModelType>(modelType: model, url: model.url) <=| modelHandler
 }
 
 infix operator *| // Combine model/request with service
