@@ -46,17 +46,20 @@ public class EmptyTask: Task {
 }
 
 public class LocalSessionService: SessionService {
-    
+ 
     public typealias DataType = Data
     
-    public static func dataTask(url: URL, completion: @escaping (Result<Data, Error>) -> ()) -> Task {
-        completion(.success(Data()))
-        
-        return EmptyTask()
-    }
+    public static func dataTask<ModelType>(request: Request<ModelType>, completion: @escaping DataTypeHandler) -> Task
+         where ModelType : NetworkProcessable
+     {
+         completion(.success(Data()))
+         
+         return EmptyTask()
+     }
 }
 
 public class UrlSessionService: SessionService {
+    
     
     public typealias DataType = Data
     
@@ -64,8 +67,11 @@ public class UrlSessionService: SessionService {
     
     private static let session = URLSession.shared
     
-    public static func dataTask(url: URL, completion: @escaping DataTypeHandler) -> Task {
-        let dataTask = self.session.dataTask(with: self.request(url: url)) { data, response, error in
+    public static func dataTask<ModelType>(request: Request<ModelType>, completion: @escaping DataTypeHandler) -> Task
+        where ModelType : NetworkProcessable
+    {
+        let request = self.request(request: request)
+        let dataTask = self.session.dataTask(with: request) { data, response, error in
             if let statusCode = (response as? HTTPURLResponse)?.statusCode, let result = data {
                 if erorrsStatusCodes.contains(statusCode) {
                     completion(.failure(decodeResponseError(statusCode: statusCode, data: result)))
@@ -86,14 +92,20 @@ public class UrlSessionService: SessionService {
         return task
     }
     
-    private static func request(url: URL) -> URLRequest {
-        var request = URLRequest(url: url)
+    private static func request<ModelType: NetworkProcessable>(request: Request<ModelType>) -> URLRequest {
+        var urlRequest = URLRequest(url: request.url)
                
         headers.dictionary.forEach {
-            request.setValue($0.value, forHTTPHeaderField: $0.key)
+            urlRequest.setValue($0.value, forHTTPHeaderField: $0.key)
         }
         
-        return request
+        if request.type == .post {
+            urlRequest.setValue("Content-type", forHTTPHeaderField: request.contentType)
+            urlRequest.httpMethod = "POST"
+            urlRequest.httpBody = request.body
+        }
+        
+        return urlRequest
     }
 }
 
@@ -110,15 +122,27 @@ public class TaskExecutableDataHandler<ModelType> {
     }
 }
 
+public enum RequestType {
+    
+    case get
+    case post
+}
+
 public struct Request<ModelType>
     where ModelType: NetworkProcessable
 {
     
     public let modelType: ModelType.Type
     public let url: URL
+    public let body: Data?
+    public let contentType: String
     
-    public init(modelType: ModelType.Type, url: URL) {
+    internal var type = RequestType.get
+    
+    public init(modelType: ModelType.Type, url: URL, body: Data? = nil, contentType: String = "") {
         self.modelType = modelType
         self.url = url
+        self.body = body
+        self.contentType = contentType
     }
 }

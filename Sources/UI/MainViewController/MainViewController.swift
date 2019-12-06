@@ -10,6 +10,15 @@ import UIKit
 
 import NetworkService
 
+struct PostBody: BodyParamsType {
+    
+    var contentType = "application/json; charset=UTF-8"
+    
+    let title = "foo"
+    let body = "bar"
+    let userId = "1"
+}
+
 struct EmptyParams: Encodable {
     
     let lat = 37.75
@@ -35,7 +44,22 @@ struct Cats: NetworkProcessable {
     typealias Service = UrlSessionService
     
     static var url = URL(string: "https://cat-fact.herokuapp.com/facts")!
+}
+
+struct Post: NetworkModel {
     
+    let id: Int
+    let title: String?
+    let body: String?
+    let userId: Int?
+}
+
+struct PostModel: NetworkProcessable {
+    
+    typealias Service = UrlSessionService
+    typealias ReturnedType = Post
+    
+    static var url = URL(string: "https://jsonplaceholder.typicode.com/posts")!
 }
 
 struct MockableCats: NetworkProcessable {
@@ -92,6 +116,10 @@ class MainViewController<CatsProvider: NetworkProcessable>: UIViewController
         super.viewDidLoad()
         
         self.prepareData()
+        
+        (PostModel.self +| PostBody()) |=> { result in
+            print(result)
+        }
     }
     
     //MARK: -

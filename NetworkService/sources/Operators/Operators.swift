@@ -9,6 +9,7 @@
 import Foundation
 
 infix operator <=|: DefaultPrecedence // GET
+infix operator |=>: DefaultPrecedence // POST
 
 @discardableResult
 public func <=| <ModelType: NetworkProcessable, ServiceType>(
@@ -17,15 +18,7 @@ public func <=| <ModelType: NetworkProcessable, ServiceType>(
 ) -> Task?
     where ModelType.Service == ServiceType
 {
-    let data = (ServiceType.self *| ModelType.self)
-    
-    data.0.handler = { result in
-        modelHandler(ModelType.ReturnedType.self.initialize(with: result))
-    }
-    
-    data.0.task?.resume()
-    
-    return data.0.task
+    return task(request: request, modelHandler: modelHandler, requestType: .get)
 }
 
 @discardableResult
@@ -38,23 +31,49 @@ public func <=| <ModelType: NetworkProcessable, ServiceType>(
     return Request<ModelType>(modelType: model, url: model.url) <=| modelHandler
 }
 
-infix operator *| // Combine model/request with service
-public func *| <Session: SessionService, Model: NetworkProcessable> (
-    session: Session.Type,
-    model: Model.Type
-)
-    -> NetworkOperationComposingResult<Model.DataType, Model.Type> where Session.DataType == Model.DataType
+@discardableResult
+public func |=> <ModelType: NetworkProcessable, ServiceType>(
+    request: Request<ModelType>,
+    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
+) -> Task?
+    where ModelType.Service == ServiceType
 {
-    let handlerContainer = TaskExecutableDataHandler<Model.DataType>(handler: nil, task: nil)
+    return task(request: request, modelHandler: modelHandler, requestType: .post)
+}
+
+@discardableResult
+public func |=> <ModelType: NetworkProcessable, ServiceType>(
+    model: ModelType.Type,
+    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
+) -> Task?
+    where ServiceType == ModelType.Service
+{
+    return Request<ModelType>(modelType: model, url: model.url) |=> modelHandler
+}
+
+private func task<ModelType: NetworkProcessable, ServiceType>(
+    request: Request<ModelType>,
+    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>,
+    requestType: RequestType
+) -> Task?
+     where ServiceType == ModelType.Service
+{
+    var mutable = request
     
-    let task = session.dataTask(url: model.url) {
-        handlerContainer.handler?($0)
+    mutable.type = requestType
+    
+    let data = (ServiceType.self *| mutable)
+    
+    data.0.handler = { result in
+        modelHandler(ModelType.ReturnedType.initialize(with: result))
     }
     
-    handlerContainer.task = task
+    data.0.task?.resume()
     
-    return (handlerContainer, model)
+    return data.0.task
 }
+
+infix operator *| // Combine model/request with service
 
 @discardableResult
 public func *| <Session: SessionService, Model: NetworkProcessable> (
@@ -65,7 +84,7 @@ public func *| <Session: SessionService, Model: NetworkProcessable> (
 {
     let handlerContainer = TaskExecutableDataHandler<Model.DataType>(handler: nil, task: nil)
     
-    let task = session.dataTask(url: request.url) {
+    let task = session.dataTask(request: request) {
         handlerContainer.handler?($0)
     }
     
@@ -74,8 +93,8 @@ public func *| <Session: SessionService, Model: NetworkProcessable> (
     return (handlerContainer, Model.self)
 }
 
-infix operator +| // Combine request with params
-public func +| <ModelType, Params: Encodable>(model: ModelType.Type, params: Params) -> Request<ModelType>
+infix operator +| // Combine request with query params
+public func +| <ModelType, Params: QueryParamsType>(model: ModelType.Type, params: Params) -> Request<ModelType>
     where ModelType: NetworkProcessable
 {
     let encoder = JSONEncoder()
@@ -86,4 +105,14 @@ public func +| <ModelType, Params: Encodable>(model: ModelType.Type, params: Par
     let url = model.url +? (dictionary ?? [:])
     
     return Request(modelType: model, url: url)
+}
+
+public func +| <ModelType, Params: BodyParamsType>(model: ModelType.Type, params: Params) -> Request<ModelType>
+    where ModelType: NetworkProcessable
+{
+    let encoder = JSONEncoder()
+    let data = (try? encoder.encode(params))
+    let url = model.url
+    
+    return Request(modelType: model, url: url, body: data, contentType: params.contentType)
 }

@@ -48,10 +48,20 @@ public protocol SessionService {
     typealias ResultedDataType = Result<DataType, Error>
     typealias DataTypeHandler = (ResultedDataType) -> ()
     
-    static func dataTask(url: URL, completion: @escaping DataTypeHandler) -> Task
+    static func dataTask<ModelType: NetworkProcessable>(
+        request: Request<ModelType>,
+        completion: @escaping DataTypeHandler
+    ) -> Task
 }
 
 public protocol Headers: Encodable {
     
     var dictionary: [String : String] { get }
+}
+
+public protocol QueryParamsType: Encodable { }
+
+public protocol BodyParamsType: Encodable {
+    
+    var contentType: String { get }
 }
