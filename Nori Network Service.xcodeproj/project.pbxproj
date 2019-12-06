@@ -14,6 +14,7 @@
 		96AA042623964EED0053E45C /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AA040823964A920053E45C /* Types.swift */; };
 		96AA042723964EED0053E45C /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AA0404239649DD0053E45C /* URL+Extensions.swift */; };
 		96AA042823964EED0053E45C /* NetworkProcessable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AA040A23964AD40053E45C /* NetworkProcessable+Extensions.swift */; };
+		96AC106C239AA647008CA1BB /* Dictionary+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AC106B239AA647008CA1BB /* Dictionary+Extension.swift */; };
 		96B712C422F8227700A39197 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B712C322F8227700A39197 /* AppDelegate.swift */; };
 		96B712CB22F8227800A39197 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96B712CA22F8227800A39197 /* Assets.xcassets */; };
 		96B712CE22F8227800A39197 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96B712CC22F8227800A39197 /* LaunchScreen.storyboard */; };
@@ -56,6 +57,7 @@
 		96AA040A23964AD40053E45C /* NetworkProcessable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NetworkProcessable+Extensions.swift"; sourceTree = "<group>"; };
 		96AA041023964E500053E45C /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		96AA041723964EC30053E45C /* NetworkService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NetworkService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		96AC106B239AA647008CA1BB /* Dictionary+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extension.swift"; sourceTree = "<group>"; };
 		96B712C022F8227700A39197 /* Nori Network Service.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nori Network Service.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96B712C322F8227700A39197 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96B712CA22F8227800A39197 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				96AA0404239649DD0053E45C /* URL+Extensions.swift */,
 				96AA040A23964AD40053E45C /* NetworkProcessable+Extensions.swift */,
 				96E749392396975F003F1260 /* Headers+Extensions.swift */,
+				96AC106B239AA647008CA1BB /* Dictionary+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 				96E7493823967A1D003F1260 /* ErrorDecode.swift in Sources */,
 				96AA042323964EED0053E45C /* Service.swift in Sources */,
 				96E7493A2396975F003F1260 /* Headers+Extensions.swift in Sources */,
+				96AC106C239AA647008CA1BB /* Dictionary+Extension.swift in Sources */,
 				96AA042723964EED0053E45C /* URL+Extensions.swift in Sources */,
 				96AA042423964EED0053E45C /* Operators.swift in Sources */,
 				96AA042823964EED0053E45C /* NetworkProcessable+Extensions.swift in Sources */,

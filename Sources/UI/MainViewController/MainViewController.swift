@@ -12,8 +12,6 @@ import NetworkService
 
 struct PostBody: BodyParamsType {
     
-    var contentType = "application/json; charset=UTF-8"
-    
     let title = "foo"
     let body = "bar"
     let userId = "1"
@@ -51,7 +49,7 @@ struct Post: NetworkModel {
     let id: Int
     let title: String?
     let body: String?
-    let userId: Int?
+    let userId: String?
 }
 
 struct PostModel: NetworkProcessable {

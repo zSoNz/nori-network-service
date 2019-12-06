@@ -73,14 +73,14 @@ func decodeResponseError(statusCode: Int, data: Data) -> ResponseError {
 }
 
 struct ResponseErrorInternal: Decodable {
-    let code: Int
+    
     let message: String
     let errors: Dictionary<String, String>?
 }
 
 func transform(responseErrorInternal: ResponseErrorInternal, statusCode: Int) -> ResponseError {
-    var code = ResponseError.Code.error(code: responseErrorInternal.code, statusCode: statusCode)
-    switch (statusCode, responseErrorInternal.code) {
+    var code = ResponseError.Code.error(code: statusCode, statusCode: statusCode)
+    switch (statusCode,statusCode) {
     case (404, 0):
         code = .pageNotFound
     case (404, 2):

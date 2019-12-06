@@ -65,3 +65,10 @@ public protocol BodyParamsType: Encodable {
     
     var contentType: String { get }
 }
+
+public extension BodyParamsType {
+    
+    var contentType: String {
+        return "application/json; charset=UTF-8"
+    }
+}

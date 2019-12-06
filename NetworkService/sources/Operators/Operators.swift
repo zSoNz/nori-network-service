@@ -111,8 +111,14 @@ public func +| <ModelType, Params: BodyParamsType>(model: ModelType.Type, params
     where ModelType: NetworkProcessable
 {
     let encoder = JSONEncoder()
-    let data = (try? encoder.encode(params))
+    
+    let data = (try? encoder.encode(params)) ?? Data()
+    
+    let dictionary = (try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)) as? [String : Any]
+    
+    let encoded = dictionary?.percentEscaped().data(using: .utf8)
+    
     let url = model.url
     
-    return Request(modelType: model, url: url, body: data, contentType: params.contentType)
+    return Request(modelType: model, url: url, body: encoded, contentType: params.contentType)
 }
