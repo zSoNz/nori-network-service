@@ -41,7 +41,7 @@ struct Cats: NetworkProcessable {
     typealias ReturnedType = CatsModel
     typealias Service = UrlSessionService
     
-    static var url = URL(string: "https://cat-fact.herokuapp.com/facts")!
+    @CatAPI(value: "facts") static var url
 }
 
 struct Post: NetworkModel {
@@ -65,7 +65,7 @@ struct MockableCats: NetworkProcessable {
     typealias ReturnedType = CatsModel
     typealias Service = LocalSessionService
     
-    static var url = URL(string: "https://cat-fact.herokuapp.com/facts")!
+    @CatAPI(value: "facts") static var url
     
     static func initialize(with data: Result<Data, Error>) -> Result<MockableCats, Error> {
         return .success(MockableCats(all: []))
