@@ -58,6 +58,11 @@ public class LocalSessionService: SessionService {
      }
 }
 
+enum Constants: String {
+    
+    case boundary = "nori netwrok layer"
+}
+
 public class UrlSessionService: SessionService {
     
     
@@ -100,7 +105,7 @@ public class UrlSessionService: SessionService {
         }
         
         if request.type == .post {
-            urlRequest.setValue("Content-type", forHTTPHeaderField: request.contentType)
+            urlRequest.setValue("multipart/form-data; boundary=\"\(Constants.boundary.rawValue)\"", forHTTPHeaderField: "Content-type")
             urlRequest.httpMethod = "POST"
             urlRequest.httpBody = request.body
         }

@@ -116,9 +116,9 @@ public func +| <ModelType, Params: BodyParamsType>(model: ModelType.Type, params
     
     let dictionary = (try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)) as? [String : Any]
     
-    let encoded = dictionary?.percentEscaped().data(using: .utf8)
+    let encoded = dictionary?.multipartRequestConverted() ?? Data()
     
     let url = model.url
     
-    return Request(modelType: model, url: url, body: encoded, contentType: params.contentType)
+    return Request(modelType: model, url: url, body: encoded)
 }

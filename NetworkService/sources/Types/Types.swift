@@ -61,14 +61,17 @@ public protocol Headers: Encodable {
 
 public protocol QueryParamsType: Encodable { }
 
-public protocol BodyParamsType: Encodable {
-    
-    var contentType: String { get }
-}
+public protocol BodyParamsType: Encodable { }
 
 public extension BodyParamsType {
     
     var contentType: String {
         return "application/json; charset=UTF-8"
     }
+}
+
+public struct File {
+    
+    let data: Data
+    let mimeType: String
 }
