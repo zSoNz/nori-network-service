@@ -36,8 +36,10 @@ public struct EmptyHeaders: Headers { }
 
 public class EmptyTask: Task {
     
+    var completion: ModelHandler<Result<Data, Error>>?
+    
     public func resume() {
-        
+        self.completion?(.success(Data()))
     }
     
     public func cancel() {
@@ -52,9 +54,11 @@ public class LocalSessionService: SessionService {
     public static func dataTask<ModelType>(request: Request<ModelType>, completion: @escaping DataTypeHandler) -> Task
          where ModelType : NetworkProcessable
      {
-         completion(.success(Data()))
-         
-         return EmptyTask()
+        let task = EmptyTask()
+        
+        task.completion = completion
+        
+        return task
      }
 }
 
@@ -64,7 +68,6 @@ enum Constants: String {
 }
 
 public class UrlSessionService: SessionService {
-    
     
     public typealias DataType = Data
     

@@ -65,7 +65,7 @@ private func task<ModelType: NetworkProcessable, ServiceType>(
     let data = (ServiceType.self *| mutable)
     
     data.0.handler = { result in
-        modelHandler(ModelType.ReturnedType.initialize(with: result))
+        modelHandler(ModelType.initialize(with: result))
     }
     
     data.0.task?.resume()

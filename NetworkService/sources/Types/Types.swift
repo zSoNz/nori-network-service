@@ -19,9 +19,7 @@ public protocol URLContainable {
 
 public protocol DataInitiable {
     
-    associatedtype DataType
-    
-    static func initialize(with data: Result<DataType, Error>) -> Result<Self, Error>
+    typealias DataType = Data
 }
 
 public protocol NetworkModel: DataInitiable, Codable {
@@ -33,6 +31,8 @@ public protocol NetworkProcessable: URLContainable, NetworkModel where DataType 
     associatedtype Service: SessionService where Service.DataType == DataType
     
     associatedtype ReturnedType: NetworkModel
+    
+    static func initialize(with data: Result<DataType, Error>) -> Result<ReturnedType, Error>
 }
 
 public protocol Task {

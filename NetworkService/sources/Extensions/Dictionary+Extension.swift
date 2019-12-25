@@ -39,7 +39,7 @@ extension Dictionary {
             let append = { (value: Any) in
                 let key = "\(key)".addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? ""
                 
-                body.append("\r\n" + "Content-Disposition: form-data; name=\"\(key)\"")
+                body.append("\r\n" + "Content-Disposition: form-data; name=\"\(key)\"\r\n")
                 
                 if let file = Data(base64Encoded: "\(value)") {
                     body.append("Content-Type: \"application/octet-stream\"\r\n\r\n")
@@ -83,7 +83,6 @@ extension Dictionary {
     }
 }
 
-
 extension Data {
     
     mutating func append(_ string: String) {
@@ -94,7 +93,6 @@ extension Data {
 }
 
 extension CharacterSet {
-    
     
     static let urlQueryValueAllowed: CharacterSet = {
         let generalDelimitersToEncode = ":#[]@" // does not include "?" or "/" due to RFC 3986 - Section 3.4
