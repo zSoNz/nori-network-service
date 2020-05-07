@@ -70,7 +70,7 @@ public func =>> <ModelType: NetworkProcessable, ServiceType>(
 ) -> Task?
     where ServiceType == ModelType.Service
 {
-    return Request<ModelType>(modelType: model, url: model.url) <=| modelHandler
+    return Request<ModelType>(modelType: model, url: model.url) =>> modelHandler
 }
 
 @discardableResult
@@ -80,7 +80,7 @@ public func !=> <ModelType: NetworkProcessable, ServiceType>(
 ) -> Task?
     where ModelType.Service == ServiceType
 {
-    return task(request: request, modelHandler: modelHandler, requestType: .del)
+    return task(request: request, modelHandler: modelHandler, requestType: .delete)
 }
 
 @discardableResult
@@ -90,7 +90,7 @@ public func !=> <ModelType: NetworkProcessable, ServiceType>(
 ) -> Task?
     where ServiceType == ModelType.Service
 {
-    return Request<ModelType>(modelType: model, url: model.url) <=| modelHandler
+    return Request<ModelType>(modelType: model, url: model.url) !=> modelHandler
 }
 
 private func task<ModelType: NetworkProcessable, ServiceType>(

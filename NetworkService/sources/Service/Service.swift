@@ -112,8 +112,8 @@ public class UrlSessionService: SessionService {
             urlRequest.httpMethod = "POST"
         case .put:
             urlRequest.httpMethod = "PUT"
-        case .del:
-            urlRequest.httpMethod = "DEL"
+        case .delete:
+            urlRequest.httpMethod = "DELETE"
         default:
             break
         }
@@ -145,7 +145,7 @@ public enum RequestType {
     case get
     case post
     case put
-    case del
+    case delete
 }
 
 public struct Request<ModelType>
