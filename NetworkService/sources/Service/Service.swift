@@ -107,9 +107,19 @@ public class UrlSessionService: SessionService {
             urlRequest.setValue($0.value, forHTTPHeaderField: $0.key)
         }
         
-        if request.type == .post {
-            urlRequest.setValue("multipart/form-data; boundary=\"\(Constants.boundary.rawValue)\"", forHTTPHeaderField: "Content-type")
+        switch request.type{
+        case .post:
             urlRequest.httpMethod = "POST"
+        case .put:
+            urlRequest.httpMethod = "PUT"
+        case .del:
+            urlRequest.httpMethod = "DEL"
+        default:
+            break
+        }
+        
+        if !(request.type == .get) {
+            urlRequest.setValue("multipart/form-data; boundary=\(Constants.boundary.rawValue)", forHTTPHeaderField: "Content-type")
             urlRequest.httpBody = request.body
         }
         
@@ -134,6 +144,8 @@ public enum RequestType {
     
     case get
     case post
+    case put
+    case del
 }
 
 public struct Request<ModelType>

@@ -10,6 +10,8 @@ import Foundation
 
 infix operator <=|: DefaultPrecedence // GET
 infix operator |=>: DefaultPrecedence // POST
+infix operator !=>: DefaultPrecedence // DEL
+infix operator =>>: DefaultPrecedence // PUT
 
 @discardableResult
 public func <=| <ModelType: NetworkProcessable, ServiceType>(
@@ -49,6 +51,46 @@ public func |=> <ModelType: NetworkProcessable, ServiceType>(
     where ServiceType == ModelType.Service
 {
     return Request<ModelType>(modelType: model, url: model.url) |=> modelHandler
+}
+
+@discardableResult
+public func =>> <ModelType: NetworkProcessable, ServiceType>(
+    request: Request<ModelType>,
+    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
+) -> Task?
+    where ModelType.Service == ServiceType
+{
+    return task(request: request, modelHandler: modelHandler, requestType: .put)
+}
+
+@discardableResult
+public func =>> <ModelType: NetworkProcessable, ServiceType>(
+    model: ModelType.Type,
+    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
+) -> Task?
+    where ServiceType == ModelType.Service
+{
+    return Request<ModelType>(modelType: model, url: model.url) <=| modelHandler
+}
+
+@discardableResult
+public func !=> <ModelType: NetworkProcessable, ServiceType>(
+    request: Request<ModelType>,
+    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
+) -> Task?
+    where ModelType.Service == ServiceType
+{
+    return task(request: request, modelHandler: modelHandler, requestType: .del)
+}
+
+@discardableResult
+public func !=> <ModelType: NetworkProcessable, ServiceType>(
+    model: ModelType.Type,
+    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
+) -> Task?
+    where ServiceType == ModelType.Service
+{
+    return Request<ModelType>(modelType: model, url: model.url) <=| modelHandler
 }
 
 private func task<ModelType: NetworkProcessable, ServiceType>(

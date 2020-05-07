@@ -41,8 +41,8 @@ extension Dictionary {
                 
                 body.append("\r\n" + "Content-Disposition: form-data; name=\"\(key)\"\r\n")
                 
-                if let file = Data(base64Encoded: "\(value)") {
-                    body.append("Content-Type: \"application/octet-stream\"\r\n")
+                if let file = value as? Data {
+                    body.append("Content-Type: \"application/octet-stream\"\r\n\r\n")
                     body.append(file)
                     body.append("\r\n")
                 } else {
