@@ -39,15 +39,23 @@ extension Dictionary {
             let append = { (value: Any) in
                 let key = "\(key)".addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? ""
                 
-                body.append("\r\n" + "Content-Disposition: form-data; name=\"\(key)\"\r\n")
-                
-                if let file = value as? Data {
-                    body.append("Content-Type: \"application/octet-stream\"\r\n\r\n")
-                    body.append(file)
+                if let file = value as? File {
+                    body.append("\r\n" + "Content-Disposition: form-data; name=\"\(key)\"; filename=\"\(file.name + file.fileExtension)\"\r\n")
+                    
+                    body.append("Content-Type: image/png\r\n\r\n")
+                    body.append(file.fileData)
                     body.append("\r\n")
                 } else {
-                    body.append("\r\n")
-                    body.append("\(value)\r\n")
+                    body.append("\r\n" + "Content-Disposition: form-data; name=\"\(key)\"\r\n")
+                    
+                    if let data = value as? Data {
+                        body.append("Content-Type: application/octet-stream\r\n\r\n")
+                        body.append(data)
+                        body.append("\r\n")
+                    } else {
+                        body.append("\r\n")
+                        body.append("\(value)\r\n")
+                    }
                 }
                 
                 body.append(boundary)

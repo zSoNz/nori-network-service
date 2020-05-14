@@ -61,17 +61,38 @@ public protocol Headers: Encodable {
 
 public protocol QueryParamsType: Encodable { }
 
-public protocol BodyParamsType: Encodable { }
+public protocol BodyParamsType: Encodable {
+    
+    var rawValues: [String : Any] { get set }
+}
 
 public extension BodyParamsType {
     
     var contentType: String {
         return "application/json; charset=UTF-8"
     }
+    
+    var rawValues: [String : Any] {
+        get {
+            return [:]
+        }
+        
+        set {
+            fatalError("Implement in object to use")
+        }
+    }
 }
 
-public struct File {
+public struct File: Codable {
     
-    let data: Data
-    let mimeType: String
+    let name: String
+    let fileExtension: String
+    let fileData: Data
+    
+    public init(name: String, fileExtension: String, fileData: Data) {
+        self.name = name
+        self.fileExtension = fileExtension
+        self.fileData = fileData
+    }
 }
+

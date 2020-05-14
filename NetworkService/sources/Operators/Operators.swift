@@ -156,7 +156,8 @@ public func +| <ModelType, Params: BodyParamsType>(model: ModelType.Type, params
     
     let data = (try? encoder.encode(params)) ?? Data()
     
-    let dictionary = (try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)) as? [String : Any]
+    var dictionary = (try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)) as? [String : Any]
+    dictionary?.merge(params.rawValues) { (_, new) in new }
     
     let encoded = dictionary?.multipartRequestConverted() ?? Data()
     
