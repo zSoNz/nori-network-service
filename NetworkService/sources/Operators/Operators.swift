@@ -8,11 +8,6 @@
 
 import Foundation
 
-infix operator <=|: DefaultPrecedence // GET
-infix operator |=>: DefaultPrecedence // POST
-infix operator !=>: DefaultPrecedence // DEL
-infix operator =>>: DefaultPrecedence // PUT
-
 public typealias ModelHandlerType<ModelType: NetworkProcessable>
     = ModelHandler<Result<ModelType.ReturnedType, Error>>
 
@@ -29,83 +24,30 @@ public func get <ModelType: NetworkProcessable, ServiceType>(
 }
 
 @discardableResult
-public func <=| <ModelType: NetworkProcessable, ServiceType>(
-    request: Request<ModelType>,
-    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
-) -> Task?
+public func post <ModelType: NetworkProcessable, ServiceType>(
+    modelHandler: @escaping ModelHandlerType<ModelType>
+) -> ((Request<ModelType>) -> Task?)
     where ModelType.Service == ServiceType
 {
-    return task(request: request, modelHandler: modelHandler, requestType: .get)
+    return curry(flip(task))(RequestType.post)(modelHandler)
 }
 
 @discardableResult
-public func <=| <ModelType: NetworkProcessable, ServiceType>(
-    model: ModelType.Type,
-    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
-) -> Task?
-    where ServiceType == ModelType.Service
-{
-    return Request<ModelType>(modelType: model, url: model.url) <=| modelHandler
-}
-
-@discardableResult
-public func |=> <ModelType: NetworkProcessable, ServiceType>(
-    request: Request<ModelType>,
-    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
-) -> Task?
+public func del <ModelType: NetworkProcessable, ServiceType>(
+    modelHandler: @escaping ModelHandlerType<ModelType>
+) -> ((Request<ModelType>) -> Task?)
     where ModelType.Service == ServiceType
 {
-    return task(request: request, modelHandler: modelHandler, requestType: .post)
+    return curry(flip(task))(RequestType.delete)(modelHandler)
 }
 
 @discardableResult
-public func |=> <ModelType: NetworkProcessable, ServiceType>(
-    model: ModelType.Type,
-    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
-) -> Task?
-    where ServiceType == ModelType.Service
-{
-    return Request<ModelType>(modelType: model, url: model.url) |=> modelHandler
-}
-
-@discardableResult
-public func =>> <ModelType: NetworkProcessable, ServiceType>(
-    request: Request<ModelType>,
-    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
-) -> Task?
+public func put <ModelType: NetworkProcessable, ServiceType>(
+    modelHandler: @escaping ModelHandlerType<ModelType>
+) -> ((Request<ModelType>) -> Task?)
     where ModelType.Service == ServiceType
 {
-    return task(request: request, modelHandler: modelHandler, requestType: .put)
-}
-
-@discardableResult
-public func =>> <ModelType: NetworkProcessable, ServiceType>(
-    model: ModelType.Type,
-    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
-) -> Task?
-    where ServiceType == ModelType.Service
-{
-    return Request<ModelType>(modelType: model, url: model.url) =>> modelHandler
-}
-
-@discardableResult
-public func !=> <ModelType: NetworkProcessable, ServiceType>(
-    request: Request<ModelType>,
-    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
-) -> Task?
-    where ModelType.Service == ServiceType
-{
-    return task(request: request, modelHandler: modelHandler, requestType: .delete)
-}
-
-@discardableResult
-public func !=> <ModelType: NetworkProcessable, ServiceType>(
-    model: ModelType.Type,
-    modelHandler: @escaping ModelHandler<Result<ModelType.ReturnedType, Error>>
-) -> Task?
-    where ServiceType == ModelType.Service
-{
-    return Request<ModelType>(modelType: model, url: model.url) !=> modelHandler
+    return curry(flip(task))(RequestType.put)(modelHandler)
 }
 
 private func task<ModelType: NetworkProcessable, ServiceType>(
