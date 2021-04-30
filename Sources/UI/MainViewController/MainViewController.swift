@@ -114,8 +114,7 @@ class MainViewController<CatsProvider: NetworkProcessable>: UIViewController
         super.viewDidLoad()
         
         self.prepareData()
-        
-        (PostModel.self +| PostBody()) |=> { result in
+        PostModel.self |+| PostBody() |*| get { result in
             print(result)
         }
     }
@@ -128,7 +127,7 @@ class MainViewController<CatsProvider: NetworkProcessable>: UIViewController
     }
     
     private func prepareData() {
-        CatsProvider.self <=| { result in
+        CatsProvider.self |*| get { result in
             _ = result.map { cats in
                 DispatchQueue.main.async {
                     self.facts = cats

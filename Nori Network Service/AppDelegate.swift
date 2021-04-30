@@ -24,8 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UrlSessionService.headers = NoriHeader()
         
-        let controller = MainViewController<Cats>()
-//        let controller = MainViewController<MockableCats>()
+//        let controller = MainViewController<Cats>()
+        let controller = MainViewController<MockableCats>()
         let navigation = UINavigationController(rootViewController: controller)
         
         let window = UIWindow(frame: UIScreen.main.bounds)

@@ -13,6 +13,21 @@ infix operator |=>: DefaultPrecedence // POST
 infix operator !=>: DefaultPrecedence // DEL
 infix operator =>>: DefaultPrecedence // PUT
 
+public typealias ModelHandlerType<ModelType: NetworkProcessable>
+    = ModelHandler<Result<ModelType.ReturnedType, Error>>
+
+public typealias HTTPMethod<ModelType: NetworkProcessable, ServiceType>
+    = (Request<ModelType>) -> Task?
+
+@discardableResult
+public func get <ModelType: NetworkProcessable, ServiceType>(
+    modelHandler: @escaping ModelHandlerType<ModelType>
+) -> ((Request<ModelType>) -> Task?)
+    where ModelType.Service == ServiceType
+{
+    return curry(flip(task))(RequestType.get)(modelHandler)
+}
+
 @discardableResult
 public func <=| <ModelType: NetworkProcessable, ServiceType>(
     request: Request<ModelType>,
@@ -104,7 +119,7 @@ private func task<ModelType: NetworkProcessable, ServiceType>(
     
     mutable.type = requestType
     
-    let data = (ServiceType.self *| mutable)
+    let data = (ServiceType.self |+| mutable)
     
     data.0.handler = { result in
         modelHandler(ModelType.initialize(with: result))
@@ -115,10 +130,10 @@ private func task<ModelType: NetworkProcessable, ServiceType>(
     return data.0.task
 }
 
-infix operator *| // Combine model/request with service
-
+/// Combine model/request/params with service
+infix operator |+|: MultiplicationPrecedence
 @discardableResult
-public func *| <Session: SessionService, Model: NetworkProcessable> (
+public func |+| <Session: SessionService, Model: NetworkProcessable> (
     session: Session.Type,
     request: Request<Model>
 )
@@ -135,8 +150,7 @@ public func *| <Session: SessionService, Model: NetworkProcessable> (
     return (handlerContainer, Model.self)
 }
 
-infix operator +| // Combine request with query params
-public func +| <ModelType, Params: QueryParamsType>(model: ModelType.Type, params: Params) -> Request<ModelType>
+public func |+| <ModelType, Params: QueryParamsType>(model: ModelType.Type, params: Params) -> Request<ModelType>
     where ModelType: NetworkProcessable
 {
     let encoder = JSONEncoder()
@@ -149,7 +163,7 @@ public func +| <ModelType, Params: QueryParamsType>(model: ModelType.Type, param
     return Request(modelType: model, url: url)
 }
 
-public func +| <ModelType, Params: BodyParamsType>(model: ModelType.Type, params: Params) -> Request<ModelType>
+public func |+| <ModelType, Params: BodyParamsType>(model: ModelType.Type, params: Params) -> Request<ModelType>
     where ModelType: NetworkProcessable
 {
     let encoder = JSONEncoder()
@@ -164,4 +178,31 @@ public func +| <ModelType, Params: BodyParamsType>(model: ModelType.Type, params
     let url = model.url
     
     return Request(modelType: model, url: url, body: encoded)
+}
+
+public typealias HTTPCombineResult<ModelType: NetworkProcessable>
+    = (@escaping (Result<ModelType.ReturnedType, Error>) -> ()) -> Task?
+
+/// Combine request with http method
+infix operator |*|: AdditionPrecedence
+
+@discardableResult
+public func |*| <ModelType, ServiceType>(
+    request: Request<ModelType>,
+    method: @escaping HTTPMethod<ModelType, ServiceType>
+)
+    -> Task? where ModelType.Service == ServiceType
+{
+    return method(request)
+}
+
+@discardableResult
+public func |*| <ModelType: NetworkProcessable, ServiceType> (
+    model: ModelType.Type,
+    method: @escaping HTTPMethod<ModelType, ServiceType>
+)
+    -> Task? where ModelType.Service == ServiceType
+{
+    let request = Request<ModelType>(modelType: model, url: model.url)
+    return method(request)
 }

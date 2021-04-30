@@ -24,6 +24,7 @@
 		96B712DC22F83A2C00A39197 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 96B712DA22F83A2C00A39197 /* MainViewController.xib */; };
 		96E7493823967A1D003F1260 /* ErrorDecode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E7493723967A1D003F1260 /* ErrorDecode.swift */; };
 		96E7493A2396975F003F1260 /* Headers+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E749392396975F003F1260 /* Headers+Extensions.swift */; };
+		96F778FA263BF7B800EC254C /* F.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96F778F9263BF7B800EC254C /* F.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		96B712DA22F83A2C00A39197 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		96E7493723967A1D003F1260 /* ErrorDecode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorDecode.swift; sourceTree = "<group>"; };
 		96E749392396975F003F1260 /* Headers+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Headers+Extensions.swift"; sourceTree = "<group>"; };
+		96F778F9263BF7B800EC254C /* F.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = F.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 				96AA040A23964AD40053E45C /* NetworkProcessable+Extensions.swift */,
 				96E749392396975F003F1260 /* Headers+Extensions.swift */,
 				96AC106B239AA647008CA1BB /* Dictionary+Extension.swift */,
+				96F778F9263BF7B800EC254C /* F.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				96070C57239E3C2100B2E9B8 /* URLPathBuilder.swift in Sources */,
+				96F778FA263BF7B800EC254C /* F.swift in Sources */,
 				96E7493823967A1D003F1260 /* ErrorDecode.swift in Sources */,
 				96AA042323964EED0053E45C /* Service.swift in Sources */,
 				96E7493A2396975F003F1260 /* Headers+Extensions.swift in Sources */,
