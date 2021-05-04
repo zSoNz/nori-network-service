@@ -17,37 +17,47 @@ public typealias HTTPMethod<ModelType: NetworkProcessable, ServiceType>
 @discardableResult
 public func get <ModelType: NetworkProcessable, ServiceType>(
     modelHandler: @escaping ModelHandlerType<ModelType>
-) -> ((Request<ModelType>) -> Task?)
-    where ModelType.Service == ServiceType
+)
+    -> ((Request<ModelType>) -> Task?) where ModelType.Service == ServiceType
 {
-    return curry(flip(task))(RequestType.get)(modelHandler)
+    lift(modelHandler: modelHandler, requestType: .get)
 }
 
 @discardableResult
 public func post <ModelType: NetworkProcessable, ServiceType>(
     modelHandler: @escaping ModelHandlerType<ModelType>
-) -> ((Request<ModelType>) -> Task?)
-    where ModelType.Service == ServiceType
+)
+    -> ((Request<ModelType>) -> Task?) where ModelType.Service == ServiceType
 {
-    return curry(flip(task))(RequestType.post)(modelHandler)
+    lift(modelHandler: modelHandler, requestType: .post)
 }
 
 @discardableResult
 public func del <ModelType: NetworkProcessable, ServiceType>(
     modelHandler: @escaping ModelHandlerType<ModelType>
-) -> ((Request<ModelType>) -> Task?)
-    where ModelType.Service == ServiceType
+)
+    -> ((Request<ModelType>) -> Task?) where ModelType.Service == ServiceType
 {
-    return curry(flip(task))(RequestType.delete)(modelHandler)
+    lift(modelHandler: modelHandler, requestType: .delete)
 }
 
 @discardableResult
 public func put <ModelType: NetworkProcessable, ServiceType>(
     modelHandler: @escaping ModelHandlerType<ModelType>
-) -> ((Request<ModelType>) -> Task?)
-    where ModelType.Service == ServiceType
+)
+    -> ((Request<ModelType>) -> Task?) where ModelType.Service == ServiceType
 {
-    return curry(flip(task))(RequestType.put)(modelHandler)
+    
+    lift(modelHandler: modelHandler, requestType: .put)
+}
+
+private func lift <ModelType: NetworkProcessable, ServiceType>(
+    modelHandler: @escaping ModelHandlerType<ModelType>,
+    requestType: RequestType
+)
+    -> ((Request<ModelType>) -> Task?) where ModelType.Service == ServiceType
+{
+    curry(flip(task))(requestType)(modelHandler)
 }
 
 private func task<ModelType: NetworkProcessable, ServiceType>(

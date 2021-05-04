@@ -114,7 +114,7 @@ class MainViewController<CatsProvider: NetworkProcessable>: UIViewController
         super.viewDidLoad()
         
         self.prepareData()
-        PostModel.self |+| PostBody() |*| get { result in
+        PostModel.self |+| PostBody() |*| post { result in
             print(result)
         }
     }
