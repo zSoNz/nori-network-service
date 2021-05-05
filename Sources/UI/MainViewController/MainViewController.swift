@@ -26,22 +26,18 @@ struct EmptyParams: Encodable {
 
 struct Cat: Codable {
     
-    let _id: String
-    let text: String
-    let type: String
+    enum CodingKeys: String, CodingKey {
+        case type
+        case text
+    }
+    
+    let type: String?
+    let text: String?
 }
 
 struct CatsModel: NetworkModel {
     
     var all: [Cat]
-}
-
-struct Cats: NetworkProcessable {
-    
-    typealias ReturnedType = CatsModel
-    typealias Service = UrlSessionService
-    
-    @CatAPI(value: "facts") static var url
 }
 
 struct Post: NetworkModel {
@@ -52,7 +48,7 @@ struct Post: NetworkModel {
     let userId: String?
 }
 
-struct PostModel: NetworkProcessable {
+class PostModel: NetworkProcessable {
     
     typealias Service = UrlSessionService
     typealias ReturnedType = Post
@@ -60,23 +56,18 @@ struct PostModel: NetworkProcessable {
     static var url = URL(string: "https://jsonplaceholder.typicode.com/posts")!
 }
 
-struct MockableCats: NetworkProcessable {
+class Cats: NetworkProcessable {
     
-    typealias ReturnedType = CatsModel
-    typealias Service = LocalSessionService
+    typealias ReturnedType = [Cat]
     
     @CatAPI(value: "facts") static var url
     
-    static func initialize(with data: Result<Data, Error>) -> Result<MockableCats, Error> {
-        return .success(MockableCats(all: []))
+    static func initialize(with data: Result<DataType, Error>) -> Result<CatsModel, Error> {
+        .success(CatsModel(all: [Cat(type: "Неко дуже кьют", text: "Мяу")]))
     }
-    
-    let all: [Cat]
 }
 
-class MainViewController<CatsProvider: NetworkProcessable>: UIViewController
-    where CatsProvider.ReturnedType == CatsModel
-{
+class MainViewController<Service: DataSessionService>: UIViewController {
 
     @IBOutlet var text: UILabel?
     
@@ -114,8 +105,8 @@ class MainViewController<CatsProvider: NetworkProcessable>: UIViewController
         super.viewDidLoad()
         
         self.prepareData()
-        PostModel.self |+| PostBody() |*| post { result in
-            print(result)
+        Service.request(model: PostModel.self, params: PostBody()) |*| post { result in
+            
         }
     }
     
@@ -127,10 +118,10 @@ class MainViewController<CatsProvider: NetworkProcessable>: UIViewController
     }
     
     private func prepareData() {
-        CatsProvider.self |*| get { result in
+        Service.request(model: Cats.self) |*| get { result in
             _ = result.map { cats in
                 DispatchQueue.main.async {
-                    self.facts = cats
+                    self.facts = CatsModel(all: cats)
                 }
             }
         }

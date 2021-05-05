@@ -10,7 +10,11 @@ import Foundation
 
 public extension NetworkProcessable where ReturnedType: Codable {
     
-    static func initialize(with data: Result<Data, Error>) -> Result<ReturnedType, Error> {
+    static func initialize(with data: Result<DataType, Error>) -> Result<ReturnedType, Error> {
+        self.dataInitialize(with: data)
+    }
+    
+    static func dataInitialize(with data: Result<Data, Error>) -> Result<ReturnedType, Error> {
         do {
             let data = try data.get()
             let decoded = try JSONDecoder().decode(ReturnedType.self, from: data)

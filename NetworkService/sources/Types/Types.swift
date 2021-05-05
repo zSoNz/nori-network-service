@@ -26,11 +26,13 @@ public protocol NetworkModel: DataInitiable, Codable {
     
 }
 
-public protocol NetworkProcessable: URLContainable, NetworkModel where DataType == Data {
+public protocol DataSessionService: SessionService where DataType == Data {
     
-    associatedtype Service: SessionService where Service.DataType == DataType
+}
+
+public protocol NetworkProcessable: URLContainable, NetworkModel {
     
-    associatedtype ReturnedType: NetworkModel
+    associatedtype ReturnedType: Codable
     
     static func initialize(with data: Result<DataType, Error>) -> Result<ReturnedType, Error>
 }
@@ -49,7 +51,7 @@ public protocol SessionService {
     typealias DataTypeHandler = (ResultedDataType) -> ()
     
     static func dataTask<ModelType: NetworkProcessable>(
-        request: Request<ModelType>,
+        request: Request<ModelType, Self>,
         completion: @escaping DataTypeHandler
     ) -> Task
 }
